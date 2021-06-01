@@ -1,15 +1,15 @@
-package v2
+package controllers
 
 import (
 	u "GoProject/apiHelpers"
-	v2s "GoProject/services/api/v2"
+	v1s "GoProject/services/api/v1"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 )
 
 //UserList function will give you the list of users
 func UserList(c *gin.Context) {
-	var userService v2s.UserService
+	var userService v1s.UserService
 
 	//decode the request body into struct and failed if any error occur
 	err := json.NewDecoder(c.Request.Body).Decode(&userService.User)

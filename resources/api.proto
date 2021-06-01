@@ -1,0 +1,22 @@
+message UUID {
+  bytes value = 1;
+}
+
+message Timestamp {
+    uint64 value = 1; // UNIX timestamp in milliseconds
+}
+
+message AuthUser {
+  string username = 1;
+  string password = 2;
+}
+
+message Msg {
+    UUID uuid = 1;
+    Timestamp ts = 2;
+
+    oneof payload {
+      AuthUser auth_user = 3;
+    }
+  }
+  
