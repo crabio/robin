@@ -9,30 +9,23 @@ import (
 
 //Execution starts from main function
 func main() {
-
-	e := godotenv.Load()
-	if e != nil {
-		fmt.Print(e)
+	// [begin request_reply]
+	nc, err := nats.Connect("demo.nats.io")
+	if err != nil {
+		log.Fatal(err)
 	}
-	r := Routers.SetupRouter()
+	defer nc.Close()
 
-	port := os.Getenv("port")
-
-	// For run on requested port
-	if len(os.Args) > 1 {
-		reqPort := os.Args[1]
-		if reqPort != "" {
-			port = reqPort
-		}
+	// Send the request
+	msg, err := nc.Request("time", nil, time.Second)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	if port == "" {
-		port = "8080" //localhost
-	}
-	type Job interface {
-		Run()
-	}
+	// Use the response
+	log.Printf("Reply: %s", msg.Data)
 
-	r.Run(":" + port)
-
+	// Close the connection
+	nc.Close()
+	// [end request_reply]
 }
