@@ -25,7 +25,7 @@ func processMsg(msg *nats.Msg) {
 	// Parse message protobuf
 	protoMsg := resources.Msg{}
 	if err := proto.Unmarshal(msg.Data, &protoMsg); err != nil {
-		err := fmt.Errorf("Failed to parse proto msg: %v", err)
+		err := fmt.Errorf("Failed to parse proto msg '%s': %v", msg.Data, err)
 		log.Error(err)
 		sendErrorResponse(msg, &resources.UUID{}, err)
 		return
@@ -34,7 +34,7 @@ func processMsg(msg *nats.Msg) {
 	// Go to msg router
 	response, err := apirouters.RouteMsg(&protoMsg)
 	if err != nil {
-		err := fmt.Errorf("Couldn't process msg: %v", err)
+		err := fmt.Errorf("Couldn't process msg '%+v': %v", protoMsg, err)
 		log.Error(err)
 		sendErrorResponse(msg, &resources.UUID{}, err)
 		return
