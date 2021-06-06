@@ -11,7 +11,7 @@ import (
 	resources "github.com/iakrevetkho/robin/internal/resources"
 )
 
-func processNatsMsg(msg *nats.Msg) {
+func processMsg(msg *nats.Msg) {
 	// Check that msg is request
 	if msg.Reply == "" {
 		log.Errorf("Await request, but receive msg without reply: %+v", msg)

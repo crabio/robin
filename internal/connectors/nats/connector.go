@@ -24,7 +24,7 @@ func Init(config config.Config) (conn Connector, err error) {
 	}
 
 	// Subscribe on requests queue
-	conn.SubPtr, err = conn.NatsConnPtr.QueueSubscribe(config.NATS.Request.Subject, config.NATS.Request.Queue, processNatsMsg)
+	conn.SubPtr, err = conn.NatsConnPtr.QueueSubscribe(config.NATS.Request.Subject, config.NATS.Request.Queue, processMsg)
 	if err != nil {
 		// Close connection
 		conn.NatsConnPtr.Close()
