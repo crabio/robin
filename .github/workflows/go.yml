@@ -18,6 +18,9 @@ jobs:
       with:
         go-version: 1.15
 
+    - name: Build protobuf
+      run: sh scripts/build_proto.sh
+
     - name: Build
       run: go build -v ./...
 
