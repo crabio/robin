@@ -1,4 +1,4 @@
-package apicontrollers
+package connectorsnats
 
 import (
 	// External
@@ -11,7 +11,7 @@ import (
 	apirouters "github.com/iakrevetkho/robin/internal/api/routers"
 )
 
-func ProcessNatsMsg(msg *nats.Msg) {
+func processNatsMsg(msg *nats.Msg) {
 	// Check that msg is request
 	if msg.Reply == "" {
 		log.Errorf("Await request, but receive msg without reply: %+v", msg)

@@ -6,8 +6,8 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	// Internal
-	apiconnectors "github.com/iakrevetkho/robin/internal/api/connectors"
 	"github.com/iakrevetkho/robin/internal/config"
+	connectors "github.com/iakrevetkho/robin/internal/connectors"
 	"github.com/iakrevetkho/robin/internal/helpers"
 )
 
@@ -19,10 +19,10 @@ func main() {
 	}
 	log.Infof("Loaded config: %+v", config)
 
-	// Init NATS connector
-	conn, err := apiconnectors.Init(config)
+	// Init connector to external system
+	conn, err := connectors.Init(config)
 	if err != nil {
-		log.Fatalf("Couldn't connect to NATS. %v", err)
+		log.Fatalf("Couldn't connect to external systems. %v", err)
 	}
 	defer conn.Close()
 
