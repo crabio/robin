@@ -49,9 +49,17 @@ func main() {
 	defer nc.Close()
 
 	// Send request
-	response, err := nc.Request(config.NATS.Request.Subject, msgBytes, 1*time.Second)
+	responseProto, err := nc.Request(config.NATS.Request.Subject, msgBytes, 1*time.Second)
 	if err != nil {
 		log.Fatalf("Couldn't send request. %v", err)
 	}
-	log.Infof("Response: %+v", response)
+
+	// Parse response
+	response := resources.Msg{}
+	err = proto.Unmarshal(responseProto.Data, &response)
+	if err != nil {
+		log.Fatalf("Couldn't deserialize response. %v", err)
+	}
+
+	log.Infof("Response: %+v", response.GetPayload())
 }
