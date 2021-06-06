@@ -17,15 +17,12 @@ jobs:
       uses: actions/setup-go@v2
       with:
         go-version: 1.15
-        
-    - name: Install Protoc
-      uses: arduino/setup-protoc@v1
+
+    - name: Protoc action
+      uses: PxyUp/protoc-actions@v2.0.9
       with:
-        version: '3.x'
-
-    - name: Build protobuf
-      run: sh scripts/build_proto.sh
-
+        path: I=./proto --go_out=./internal ./proto/*
+    
     - name: Build
       run: go build -v ./...
 
