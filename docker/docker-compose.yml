@@ -1,0 +1,6 @@
+version: "3.5"
+services:
+  nats:
+    image: nats:2.2-scratch
+    ports:
+      - "8222:8222"
