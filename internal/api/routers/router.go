@@ -2,19 +2,30 @@ package apirouters
 
 import (
 	// External
+	"fmt"
+
 	log "github.com/sirupsen/logrus"
 	// Internal
 	apiservices "github.com/iakrevetkho/robin/internal/api/services"
 	resources "github.com/iakrevetkho/robin/internal/resources"
 )
 
-func RouteMsg(msg *resources.Msg) {
-	log.Debugf("Route message UUID:%s", msg.Uuid.Value)
+func RouteMsg(request *resources.Msg) (response *resources.Msg, err error) {
+	log.Debugf("Route message UUID:%s", request.Uuid.Value)
 
-	switch msg.GetPayload().(type) {
+	switch request.GetPayload().(type) {
 	case *resources.Msg_AuthUserRequest:
-		apiservices.AuthUserRequest(msg.GetAuthUserRequest())
+		responsePayload, err := apiservices.AuthUserRequest(request.GetAuthUserRequest())
+		response := &resources.Msg{
+			Uuid: request.Uuid,
+			Ts:   request.Ts,
+			Payload: &resources.Msg_AuthUserResponse{
+				AuthUserResponse: responsePayload,
+			},
+		}
+		return response, err
 	default:
-		log.Errorf("Unknown message type: %+v", msg)
+		err = fmt.Errorf("Unknown message type: %+v", request)
 	}
+	return
 }

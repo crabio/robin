@@ -4,10 +4,10 @@ import (
 	// External
 	"time"
 
-	"github.com/golang/protobuf/proto"
 	"github.com/nats-io/nats.go"
 	uuid "github.com/satori/go.uuid"
 	log "github.com/sirupsen/logrus"
+	"google.golang.org/protobuf/proto"
 
 	// Internal
 	"github.com/iakrevetkho/robin/internal/config"

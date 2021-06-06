@@ -28,5 +28,22 @@ func processMsg(msg *nats.Msg) {
 	}
 
 	// Go to msg router
-	apirouters.RouteMsg(&protoMsg)
+	response, err := apirouters.RouteMsg(&protoMsg)
+	if err != nil {
+		log.Errorf("Couldn't process msg: %v", err)
+		// TODO Send error response
+		return
+	}
+
+	// Serialize response
+	protoResponse, err := proto.Marshal(response)
+	if err != nil {
+		log.Fatalf("Couldn't serialize proto response: %v", err)
+	}
+
+	// Send response
+	err = msg.Respond(protoResponse)
+	if err != nil {
+		log.Errorf("Couldn't send response. %v", err)
+	}
 }
