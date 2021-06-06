@@ -1,31 +1,18 @@
 package main
 
 import (
-	"GoProject/routers"
-	"fmt"
-	"github.com/joho/godotenv"
-	"os"
+	// External
+	log "github.com/sirupsen/logrus"
+	// Internal
+	"github.com/iakrevetkho/robin/internal/config"
 )
 
 //Execution starts from main function
 func main() {
-	// [begin request_reply]
-	nc, err := nats.Connect("demo.nats.io")
+	// Load app configuration
+	config, err := config.LoadConfig("config.yml")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Couldn't load app config. %v", err)
 	}
-	defer nc.Close()
-
-	// Send the request
-	msg, err := nc.Request("time", nil, time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Use the response
-	log.Printf("Reply: %s", msg.Data)
-
-	// Close the connection
-	nc.Close()
-	// [end request_reply]
+	log.Infof("Loaded config: %+v", config)
 }

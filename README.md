@@ -20,3 +20,9 @@ sudo apt-get -y install protobuf-compiler
 ```sh
 go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
 ```
+
+## Configuration
+
+App should be located near configuration file `config.yml`.
+
+Example file can be found in repo's `config.yml`.
