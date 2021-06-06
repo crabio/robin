@@ -18,6 +18,12 @@ jobs:
       with:
         go-version: 1.15
 
+    - name: Check repo
+      run: ls
+
+    - name: Check root repo
+      run: ls ..
+
     - name: Protoc action
       uses: PxyUp/protoc-actions@v2.0.9
       with:
