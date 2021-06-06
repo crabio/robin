@@ -22,7 +22,7 @@ func ProcessNatsMsg(msg *nats.Msg) {
 	// Parse message protobuf
 	protoMsg := apiproto.Msg{}
 	if err := proto.Unmarshal(msg.Data, &protoMsg); err != nil {
-		log.Errorf("Failed to parse proto msg:", err)
+		log.Errorf("Failed to parse proto msg: %v", err)
 		// TODO Send error response
 	}
 
