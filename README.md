@@ -40,3 +40,11 @@ docker run --rm -v $(pwd):/app -w /app golangci/golangci-lint:v1.40-alpine golan
 ## Test
 
 Before pull request, please run `test.sh` script from the `scripts` folder for checking errors.
+
+## Run
+
+For running use:
+
+```sh
+go run .
+```
