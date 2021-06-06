@@ -34,7 +34,7 @@ func processMsg(msg *nats.Msg) {
 	// Go to msg router
 	response, err := apirouters.RouteMsg(&protoMsg)
 	if err != nil {
-		err := fmt.Errorf("Couldn't process msg '%+v': %v", protoMsg, err)
+		err := fmt.Errorf("Couldn't process msg '%+v': %v", protoMsg.GetPayload(), err)
 		log.Error(err)
 		sendErrorResponse(msg, &resources.UUID{}, err)
 		return
