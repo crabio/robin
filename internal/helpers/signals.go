@@ -16,7 +16,6 @@ func WaitTermSignals() os.Signal {
 		syscall.SIGINT,
 		syscall.SIGQUIT,
 		syscall.SIGABRT,
-		syscall.SIGKILL,
 		syscall.SIGTERM)
 
 	// Wait any terminate signal

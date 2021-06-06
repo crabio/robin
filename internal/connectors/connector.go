@@ -24,6 +24,10 @@ func Init(config config.Config) (conn Connector, err error) {
 	return
 }
 
-func (conn *Connector) Close() {
-	conn.natsConnPtr.Close()
+func (conn *Connector) Close() (err error) {
+	err = conn.natsConnPtr.Close()
+	if err != nil {
+		return
+	}
+	return
 }

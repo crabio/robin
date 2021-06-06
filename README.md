@@ -36,3 +36,7 @@ To run this we recomend use Docker:
 ```sh
 docker run --rm -v $(pwd):/app -w /app golangci/golangci-lint:v1.40-alpine golangci-lint run
 ```
+
+## Test
+
+Before pull request, please run `test.sh` script from the `scripts` folder for checking errors.

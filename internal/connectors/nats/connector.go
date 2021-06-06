@@ -34,9 +34,11 @@ func Init(config config.Config) (conn Connector, err error) {
 	return
 }
 
-func (conn *Connector) Close() {
+func (conn *Connector) Close() (err error) {
 	// Close subscription
-	conn.SubPtr.Unsubscribe()
+	err = conn.SubPtr.Unsubscribe()
 	// Close connection
 	conn.NatsConnPtr.Close()
+
+	return
 }
