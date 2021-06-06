@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/golangci/golangci-lint v1.40.1 // indirect
 	github.com/jinzhu/configor v1.2.1
 	github.com/joho/godotenv v1.3.0
 	github.com/nats-io/nats.go v1.11.0

@@ -26,3 +26,13 @@ go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
 App should be located near configuration file `config.yml`.
 
 Example file can be found in repo's `config.yml`.
+
+## Lint
+
+For linting we are using [golangci-lint](https://github.com/golangci/golangci-lint)
+
+To run this we recomend use Docker:
+
+```sh
+docker run --rm -v $(pwd):/app -w /app golangci/golangci-lint:v1.40-alpine golangci-lint run
+```

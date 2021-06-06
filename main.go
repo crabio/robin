@@ -29,7 +29,10 @@ func main() {
 	defer nc.Close()
 
 	// Subscribe on queue in the subject
-	nc.QueueSubscribe(config.NATS.Request.Subject, config.NATS.Request.Queue, apicontrollers.ProcessNatsMsg)
+	sub, err := nc.QueueSubscribe(config.NATS.Request.Subject, config.NATS.Request.Queue, apicontrollers.ProcessNatsMsg)
+	if err != nil {
+		log.Fatalf("Couldn't subscribe on request topic '%s' with queue '%s'. %v", config.NATS.Request.Subject, config.NATS.Request.Queue, err)
+	}
 
 	// Send the request
 	msg, err := nc.Request(config.NATS.Request.Subject, []byte("lawndla"), time.Second)
@@ -39,6 +42,12 @@ func main() {
 
 	// Use the response
 	log.Printf("Reply: %s", msg.Data)
+
+	// Close subscription
+	err = sub.Unsubscribe()
+	if err != nil {
+		log.Errorf("Couldn't unsubscribe from request topic '%s' with queue '%s'. %v", config.NATS.Request.Subject, config.NATS.Request.Queue, err)
+	}
 
 	// Close the connection
 	nc.Close()
