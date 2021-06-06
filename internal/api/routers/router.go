@@ -4,8 +4,8 @@ import (
 	// External
 	log "github.com/sirupsen/logrus"
 	// Internal
-	apiprocessors "github.com/iakrevetkho/robin/internal/api/processors"
 	"github.com/iakrevetkho/robin/internal/api/proto"
+	apiservices "github.com/iakrevetkho/robin/internal/api/services"
 )
 
 func RouteMsg(msg *proto.Msg) {
@@ -13,7 +13,7 @@ func RouteMsg(msg *proto.Msg) {
 
 	switch msg.GetPayload().(type) {
 	case *proto.Msg_AuthUserRequest:
-		apiprocessors.AuthUserRequest(msg.GetAuthUserRequest())
+		apiservices.AuthUserRequest(msg.GetAuthUserRequest())
 	default:
 		log.Errorf("Unknown message type: %+v", msg)
 	}

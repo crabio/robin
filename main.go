@@ -2,16 +2,17 @@ package main
 
 import (
 	// External
+
 	"time"
 
 	"github.com/nats-io/nats.go"
 	log "github.com/sirupsen/logrus"
 
 	// Internal
+	apicontrollers "github.com/iakrevetkho/robin/internal/api/controllers"
 	"github.com/iakrevetkho/robin/internal/config"
 )
 
-//Execution starts from main function
 func main() {
 	// Load app configuration
 	config, err := config.LoadConfig("config.yml")
@@ -27,8 +28,11 @@ func main() {
 	}
 	defer nc.Close()
 
+	// Subscribe on queue in the subject
+	nc.QueueSubscribe(config.NATS.Request.Subject, config.NATS.Request.Queue, apicontrollers.ProcessNatsMsg)
+
 	// Send the request
-	msg, err := nc.Request("time", nil, time.Second)
+	msg, err := nc.Request(config.NATS.Request.Subject, []byte("lawndla"), time.Second)
 	if err != nil {
 		log.Fatalf("Couldn't send NATS request. %v", err)
 	}

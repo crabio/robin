@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package api;
+option go_package = "api/proto";
+
+import "generic.proto";
+
+message Error {
+  UUID request_uuid = 1;
+  string reason = 2;
+}
