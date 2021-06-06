@@ -18,17 +18,14 @@ jobs:
       with:
         go-version: 1.15
 
-    - name: Check repo
-      run: ls
+    - name: Setup protoc
+      uses: arduino/setup-protoc@v1.1.2
+      with:
+        version: '3.x'
 
-    - name: Check root repo
-      run: ls ..
+    - name: Setup protobuf generator for Golang
+      run: go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
 
-    # - name: Protoc action
-    #   uses: PxyUp/protoc-actions@v2.0.9
-    #   with:
-    #     path: I=./proto --go_out=./internal ./proto/*
-    
     - name: Build
       run: go build -v ./...
 
