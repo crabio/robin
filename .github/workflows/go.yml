@@ -24,10 +24,10 @@ jobs:
     - name: Check root repo
       run: ls ..
 
-    - name: Protoc action
-      uses: PxyUp/protoc-actions@v2.0.9
-      with:
-        path: I=./proto --go_out=./internal ./proto/*
+    # - name: Protoc action
+    #   uses: PxyUp/protoc-actions@v2.0.9
+    #   with:
+    #     path: I=./proto --go_out=./internal ./proto/*
     
     - name: Build
       run: go build -v ./...
