@@ -8,6 +8,7 @@ import (
 	// Internal
 	apiconnectors "github.com/iakrevetkho/robin/internal/api/connectors"
 	"github.com/iakrevetkho/robin/internal/config"
+	"github.com/iakrevetkho/robin/internal/helpers"
 )
 
 func main() {
@@ -24,4 +25,8 @@ func main() {
 		log.Fatalf("Couldn't connect to NATS. %v", err)
 	}
 	defer conn.Close()
+
+	// Wait any terminate signal
+	signal := helpers.WaitTermSignals()
+	log.Infof("Exit. Catched signal '%s'", signal.String())
 }
