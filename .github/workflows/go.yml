@@ -26,6 +26,9 @@ jobs:
     - name: Setup protobuf generator for Golang
       run: go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
 
+    - name: Build protobuf
+      run: sh scripts/build_proto.sh 
+
     - name: Build
       run: go build -v ./...
 
