@@ -34,3 +34,6 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+
+    - name: Lint
+      uses: matoous/golangci-lint-action@v1.23.3
