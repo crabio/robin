@@ -9,7 +9,7 @@ import (
 )
 
 func RouteMsg(msg *proto.Msg) {
-	log.Debugf("Route message UUID:%s ts:", msg.Uuid, msg.Ts)
+	log.Debugf("Route message UUID:%s", msg.Uuid.Value)
 
 	switch msg.GetPayload().(type) {
 	case *proto.Msg_AuthUserRequest:
