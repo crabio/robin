@@ -1,2 +1,5 @@
 nats:
   hostname: "localhost"
+  request:
+    subject: "auth-request"
+    queue: "robin"

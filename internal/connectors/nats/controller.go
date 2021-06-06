@@ -1,4 +1,4 @@
-package apicontrollers
+package connectorsnats
 
 import (
 	// External
@@ -7,11 +7,11 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	// Internal
-	apiproto "github.com/iakrevetkho/robin/internal/api/proto"
 	apirouters "github.com/iakrevetkho/robin/internal/api/routers"
+	resources "github.com/iakrevetkho/robin/internal/resources"
 )
 
-func ProcessNatsMsg(msg *nats.Msg) {
+func processMsg(msg *nats.Msg) {
 	// Check that msg is request
 	if msg.Reply == "" {
 		log.Errorf("Await request, but receive msg without reply: %+v", msg)
@@ -20,10 +20,11 @@ func ProcessNatsMsg(msg *nats.Msg) {
 	}
 
 	// Parse message protobuf
-	protoMsg := apiproto.Msg{}
+	protoMsg := resources.Msg{}
 	if err := proto.Unmarshal(msg.Data, &protoMsg); err != nil {
 		log.Errorf("Failed to parse proto msg: %v", err)
 		// TODO Send error response
+		return
 	}
 
 	// Go to msg router

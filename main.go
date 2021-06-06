@@ -3,14 +3,12 @@ package main
 import (
 	// External
 
-	"time"
-
-	"github.com/nats-io/nats.go"
 	log "github.com/sirupsen/logrus"
 
 	// Internal
-	apicontrollers "github.com/iakrevetkho/robin/internal/api/controllers"
 	"github.com/iakrevetkho/robin/internal/config"
+	connectors "github.com/iakrevetkho/robin/internal/connectors"
+	"github.com/iakrevetkho/robin/internal/helpers"
 )
 
 func main() {
@@ -21,35 +19,14 @@ func main() {
 	}
 	log.Infof("Loaded config: %+v", config)
 
-	// [begin request_reply]
-	nc, err := nats.Connect(config.NATS.Hostname)
+	// Init connector to external system
+	conn, err := connectors.Init(config)
 	if err != nil {
-		log.Fatalf("Couldn't connect to NATS. %v", err)
+		log.Fatalf("Couldn't connect to external systems. %v", err)
 	}
-	defer nc.Close()
+	defer conn.Close()
 
-	// Subscribe on queue in the subject
-	sub, err := nc.QueueSubscribe(config.NATS.Request.Subject, config.NATS.Request.Queue, apicontrollers.ProcessNatsMsg)
-	if err != nil {
-		log.Fatalf("Couldn't subscribe on request topic '%s' with queue '%s'. %v", config.NATS.Request.Subject, config.NATS.Request.Queue, err)
-	}
-
-	// Send the request
-	msg, err := nc.Request(config.NATS.Request.Subject, []byte("lawndla"), time.Second)
-	if err != nil {
-		log.Fatalf("Couldn't send NATS request. %v", err)
-	}
-
-	// Use the response
-	log.Printf("Reply: %s", msg.Data)
-
-	// Close subscription
-	err = sub.Unsubscribe()
-	if err != nil {
-		log.Errorf("Couldn't unsubscribe from request topic '%s' with queue '%s'. %v", config.NATS.Request.Subject, config.NATS.Request.Queue, err)
-	}
-
-	// Close the connection
-	nc.Close()
-	// [end request_reply]
+	// Wait any terminate signal
+	signal := helpers.WaitTermSignals()
+	log.Infof("Exit. Catched signal '%s'", signal.String())
 }

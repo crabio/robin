@@ -18,17 +18,6 @@ jobs:
       with:
         go-version: 1.15
 
-    - name: Setup protoc
-      uses: arduino/setup-protoc@v1.1.2
-      with:
-        version: '3.x'
-
-    - name: Setup protobuf generator for Golang
-      run: go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
-
-    - name: Build protobuf
-      run: sh scripts/build_proto.sh 
-
     - name: Build
       run: go build -v ./...
 
