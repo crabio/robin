@@ -4,6 +4,7 @@ package resources;
 option go_package = "/resources";
 
 import "generic.proto";
+import "error.proto";
 import "auth_user.proto";
 
 message Msg {
@@ -11,7 +12,8 @@ message Msg {
   Timestamp ts = 2;
 
   oneof payload {
-    AuthUserRequest auth_user_request = 3;
-    AuthUserResponse auth_user_response = 4;
+    Error error = 3;
+    AuthUserRequest auth_user_request = 4;
+    AuthUserResponse auth_user_response = 5;
   }
 }
