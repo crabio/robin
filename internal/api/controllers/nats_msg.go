@@ -24,6 +24,7 @@ func ProcessNatsMsg(msg *nats.Msg) {
 	if err := proto.Unmarshal(msg.Data, &protoMsg); err != nil {
 		log.Errorf("Failed to parse proto msg: %v", err)
 		// TODO Send error response
+		return
 	}
 
 	// Go to msg router
