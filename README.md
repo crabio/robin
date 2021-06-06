@@ -6,3 +6,17 @@ Authentication service, which provide multiple authentication providers
 ## Structure
 
 Code structure is based on the [Golang-Project-Structure](https://github.com/Mindinventory/Golang-Project-Structure)
+
+## Presequinces
+
+* Install `protobuf compiler`:
+
+```sh
+sudo apt-get -y install protobuf-compiler
+```
+
+* Install Google protobuf for Golang:
+
+```sh
+go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
+```
