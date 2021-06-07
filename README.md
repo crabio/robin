@@ -48,3 +48,12 @@ For running use:
 ```sh
 go run .
 ```
+
+## Deployment
+
+### Docker
+
+For deploy app with docker run script in `docker` folder:
+```sh
+docker-compose up -d
+```
