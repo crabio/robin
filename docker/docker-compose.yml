@@ -7,15 +7,14 @@ services:
       - "6222:6222"
       - "1000:8222"
   
-  cockroach-db:
-    container_name: cockroach-db
+  roach-db:
     image: cockroachdb/cockroach:v21.1.2
-    volumes:
-        - cockroach-db:/cockroach/cockroach-data
     command: start-single-node --insecure
     ports:
-        - "26257:26257"
-        - "1001:8080"
+      - "26257:26257"
+      - "1001:8080"
+    volumes:
+      - roach-db:/cockroach/cockroach-data
 
 volumes:
-  cockroach-db:
+  roach-db:
