@@ -4,6 +4,7 @@ package resources;
 option go_package = "/resources";
 
 import "auth_provider.proto";
+import "error.proto";
 
 message AuthRequest {
   // External system for authentication
@@ -14,4 +15,6 @@ message AuthRequest {
 
 message AuthResponse {
   bool success = 1;
+  // Error message if auth was non success
+  Error error = 2;
 }
