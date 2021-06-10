@@ -1,8 +1,8 @@
-package connectorsnats
+package apihelpers
 
 import (
 	// External
-
+	"fmt"
 	"time"
 
 	"github.com/nats-io/nats.go"
@@ -13,7 +13,13 @@ import (
 	resources "github.com/iakrevetkho/robin/internal/resources"
 )
 
-func sendErrorResponse(msg *nats.Msg, requestUUID *resources.UUID, err error) {
+// Method for sending error response onto message from NATS broker.
+// This method also logs error message bases on `format` and `..args`
+func NatsErrorResponse(msg *nats.Msg, requestUUID *resources.UUID, format string, args ...interface{}) {
+	// Log error
+	err := fmt.Errorf(format, args...)
+	log.Error(err)
+
 	// Create message
 	response := resources.Msg{
 		Uuid: requestUUID,

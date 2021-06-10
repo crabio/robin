@@ -1,4 +1,4 @@
-package connectorsnats
+package apiconnectors
 
 import (
 	// External
@@ -6,17 +6,19 @@ import (
 	"github.com/nats-io/nats.go"
 
 	// Internal
+	controllers "github.com/iakrevetkho/robin/internal/api/controllers"
+	apiresources "github.com/iakrevetkho/robin/internal/api/resources"
 	"github.com/iakrevetkho/robin/internal/config"
 )
 
 // Connector for processing requests from NATS broker
-type Connector struct {
+type NatsConnector struct {
 	NatsConnPtr *nats.Conn
 	SubPtr      *nats.Subscription
 }
 
 // Create ant init instance of NATS connector
-func Init(config config.Config) (conn Connector, err error) {
+func NatsInit(controllerData apiresources.ControllerData, config config.Config) (conn *NatsConnector, err error) {
 	// Connect to broker
 	conn.NatsConnPtr, err = nats.Connect(config.NATS.Hostname)
 	if err != nil {
@@ -24,7 +26,12 @@ func Init(config config.Config) (conn Connector, err error) {
 	}
 
 	// Subscribe on requests queue
-	conn.SubPtr, err = conn.NatsConnPtr.QueueSubscribe(config.NATS.Request.Subject, config.NATS.Request.Queue, processMsg)
+	conn.SubPtr, err = conn.NatsConnPtr.QueueSubscribe(
+		config.NATS.Request.Subject,
+		config.NATS.Request.Queue,
+		func(msg *nats.Msg) {
+			controllers.NatsMessage(controllerData, msg)
+		})
 	if err != nil {
 		// Close connection
 		conn.NatsConnPtr.Close()
@@ -34,7 +41,7 @@ func Init(config config.Config) (conn Connector, err error) {
 	return
 }
 
-func (conn *Connector) Close() (err error) {
+func (conn *NatsConnector) Close() (err error) {
 	// Close subscription
 	err = conn.SubPtr.Unsubscribe()
 	// Close connection

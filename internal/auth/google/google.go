@@ -3,6 +3,7 @@ package authgoogle
 import (
 	// External
 
+	"context"
 	"io/ioutil"
 
 	log "github.com/sirupsen/logrus"
@@ -50,18 +51,25 @@ func New(config config.Config) (provider *Provider, err error) {
 // Method for processing redirect from auth provider after user is authenticated
 func (p *Provider) ProcessAuthRedirect(authCode string) (err error) {
 	// Handle the exchange code to initiate a transport.
-	token, err := p.oAuthConf.Exchange(oauth2.NoContext, authCode)
+	token, err := p.oAuthConf.Exchange(context.Background(), authCode)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	client := p.oAuthConf.Client(oauth2.NoContext, token)
+	client := p.oAuthConf.Client(context.Background(), token)
 
 	// Get user email from Google
-	response, err := client.Get("https://www.googleapis.com/auth/userinfo.email")
+	response, err := client.Get(profileEndroint)
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
-	log.Infof("%+v", response)
+
+	// Read response body data
+	bodyBytes, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return
+	}
+
+	log.Debugf("Google auth response data %+v", string(bodyBytes))
 	return
 }

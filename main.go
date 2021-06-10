@@ -6,9 +6,10 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	// Internal
-
+	api "github.com/iakrevetkho/robin/internal/api"
+	apiresources "github.com/iakrevetkho/robin/internal/api/resources"
+	auth_google "github.com/iakrevetkho/robin/internal/auth/google"
 	"github.com/iakrevetkho/robin/internal/config"
-	connectors "github.com/iakrevetkho/robin/internal/connectors"
 	"github.com/iakrevetkho/robin/internal/helpers"
 )
 
@@ -28,12 +29,17 @@ func main() {
 		log.Fatalf("Couldn't init google auth provider. %v", err)
 	}
 
-	// Init connector to external system
-	conn, err := connectors.Init(config)
-	if err != nil {
-		log.Fatalf("Couldn't connect to external systems. %v", err)
+	// Create api controller data
+	controllerData := apiresources.ControllerData{
+		GoogleAuthProvider: googleAuthProvider,
 	}
-	defer conn.Close()
+
+	// Init API controller
+	apiController, err := api.Init(controllerData, config)
+	if err != nil {
+		log.Fatalf("Couldn't init API controller. %v", err)
+	}
+	defer apiController.Close()
 
 	// Wait any terminate signal
 	signal := helpers.WaitTermSignals()
