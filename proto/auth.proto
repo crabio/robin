@@ -3,8 +3,13 @@ syntax = "proto3";
 package resources;
 option go_package = "/resources";
 
+import "auth_provider.proto";
+
 message AuthRequest {
-  string context = 1;
+  // External system for authentication
+  AuthProviderEnum provider = 1;
+  // Authentication code from redirect URL
+  string auth_code = 2;
 }
 
 message AuthResponse {
