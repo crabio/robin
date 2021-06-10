@@ -8,4 +8,9 @@ type Config struct {
 			Queue   string `default:"robin"`
 		}
 	}
+	Auth struct {
+		Google struct {
+			SecretFileName string `default:"secrets/google.json"`
+		}
+	}
 }

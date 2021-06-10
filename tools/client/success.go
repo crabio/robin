@@ -25,12 +25,12 @@ func sendSuccessRequest(config config.Config, nc *nats.Conn) {
 		Ts: &resources.Timestamp{
 			Value: uint64(time.Now().Unix()),
 		},
-		Payload: &resources.Msg_AuthUserRequest{
-			AuthUserRequest: &resources.AuthUserRequest{
-				Username: "test",
-				Password: "test",
-			},
-		},
+		// Payload: &resources.Msg_AuthUserRequest{
+		// 	AuthUserRequest: &resources.AuthUserRequest{
+		// 		Username: "test",
+		// 		Password: "test",
+		// 	},
+		// },
 	}
 
 	// Serialize message

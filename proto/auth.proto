@@ -4,8 +4,7 @@ package resources;
 option go_package = "/resources";
 
 message AuthUserRequest {
-  string username = 1;
-  string password = 2;
+  string context = 1;
 }
 
 message AuthUserResponse {
