@@ -5,7 +5,8 @@ option go_package = "/resources";
 
 import "generic.proto";
 import "error.proto";
-import "auth_user.proto";
+import "login.proto";
+import "auth.proto";
 
 message Msg {
   UUID uuid = 1;
@@ -13,7 +14,9 @@ message Msg {
 
   oneof payload {
     Error error = 3;
-    AuthUserRequest auth_user_request = 4;
-    AuthUserResponse auth_user_response = 5;
+    LoginRequest login_request = 4;
+    LoginResponse login_response = 5;
+    AuthRequest auth_request = 6;
+    AuthResponse auth_response = 7;
   }
 }

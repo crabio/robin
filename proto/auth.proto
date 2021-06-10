@@ -3,10 +3,10 @@ syntax = "proto3";
 package resources;
 option go_package = "/resources";
 
-message AuthUserRequest {
+message AuthRequest {
   string context = 1;
 }
 
-message AuthUserResponse {
+message AuthResponse {
   bool success = 1;
 }
