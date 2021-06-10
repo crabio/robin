@@ -16,6 +16,7 @@ func RouteMsg(controllerData apiresources.ControllerData, request *resources.Msg
 	log.Debugf("Route message UUID:%s", request.Uuid.Value)
 
 	switch request.GetPayload().(type) {
+
 	case *resources.Msg_LoginRequest:
 		responsePayload, err := services.LoginRequest(controllerData, request.GetLoginRequest())
 		response := &resources.Msg{
@@ -26,6 +27,18 @@ func RouteMsg(controllerData apiresources.ControllerData, request *resources.Msg
 			},
 		}
 		return response, err
+
+	case *resources.Msg_AuthRequest:
+		responsePayload, err := services.AuthRequest(controllerData, request.GetAuthRequest())
+		response := &resources.Msg{
+			Uuid: request.Uuid,
+			Ts:   request.Ts,
+			Payload: &resources.Msg_AuthResponse{
+				AuthResponse: responsePayload,
+			},
+		}
+		return response, err
+
 	default:
 		err = fmt.Errorf("Unknown message type: %+v", request)
 	}
