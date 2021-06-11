@@ -21,17 +21,40 @@ jobs:
     - name: Build
       run: go build -v ./...
 
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.15
+
     - name: Test
       run: go test -coverprofile=coverage.out -v ./...
 
     - name: Code coverage
       run: go tool cover -func coverage.out
 
+    - name: Code coverage html
+      run: go tool cover -html=coverage.out -o=coverage.html
+
     - name: Archive code coverage results
       uses: actions/upload-artifact@v2
       with:
         name: code-coverage-report
-        path: coverage.out
+        path: coverage.html
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.15
 
     - name: Lint
       uses: golangci/golangci-lint-action@v2
