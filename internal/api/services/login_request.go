@@ -17,7 +17,7 @@ func LoginRequest(controllerData apiresources.ControllerData, msg *proto_resourc
 
 	case proto_resources.AuthProviderEnum_google:
 		response = &proto_resources.LoginResponse{
-			Url: controllerData.GoogleAuthProvider.AuthURL,
+			Url: controllerData.GoogleAuthProvider.GetAuthURL(),
 		}
 		return response, nil
 
