@@ -31,7 +31,7 @@ func main() {
 	r.LoadHTMLFiles("auth.html")
 
 	go func() {
-		r.Run(":9000") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+		r.Run(":9000")
 	}()
 
 	// Example of error response from `robin`

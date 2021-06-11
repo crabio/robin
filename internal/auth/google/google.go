@@ -15,8 +15,15 @@ import (
 	"github.com/iakrevetkho/robin/internal/config"
 )
 
+// Constants
 const (
 	profileEndroint = "https://www.googleapis.com/oauth2/v2/userinfo"
+)
+
+// Semi-constants
+var (
+	authWithoutChooseAccount oauth2.AuthCodeOption = oauth2.SetAuthURLParam("prompt", "none")
+	authWithChooseAccount    oauth2.AuthCodeOption = oauth2.SetAuthURLParam("prompt", "select_account")
 )
 
 type Provider struct {
@@ -46,7 +53,7 @@ func New(config config.Config) (provider *Provider, err error) {
 
 	provider = &Provider{
 		oAuthConf: conf,
-		AuthURL:   conf.AuthCodeURL("state"),
+		AuthURL:   conf.AuthCodeURL("state", authWithChooseAccount),
 	}
 	return
 }
