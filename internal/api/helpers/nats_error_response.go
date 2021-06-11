@@ -44,4 +44,6 @@ func NatsErrorResponse(msg *nats.Msg, requestUUID *resources.UUID, format string
 	if err != nil {
 		return fmt.Errorf("Couldn't send response. %v", err)
 	}
+
+	return nil
 }

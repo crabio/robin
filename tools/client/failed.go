@@ -31,4 +31,6 @@ func sendFailedRequest(config config.Config, nc *nats.Conn) error {
 	}
 
 	log.Infof("Response: %+v", response.GetPayload())
+
+	return nil
 }
