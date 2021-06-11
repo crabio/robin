@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package resources;
-option go_package = "/resources";
+option go_package = "/proto_resources";
 
 message UUID {
   bytes value = 1;

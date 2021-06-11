@@ -3,3 +3,7 @@ nats:
   request:
     subject: "auth-request"
     queue: "robin"
+auth:
+  google:
+    secretfilename: "secrets/google.json"
+    redirecturl: "http://localhost:9000/auth"

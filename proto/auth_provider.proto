@@ -3,6 +3,6 @@ syntax = "proto3";
 package resources;
 option go_package = "/proto_resources";
 
-message Error {
-  string reason = 1;
+enum AuthProviderEnum {
+  google = 0;
 }

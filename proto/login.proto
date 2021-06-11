@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package resources;
+option go_package = "/proto_resources";
+
+import "auth_provider.proto";
+
+message LoginRequest {
+  // External system for authentication
+  AuthProviderEnum provider = 1;
+}
+
+message LoginResponse {
+  // URL on which user should be redirected to be authenticated via external system
+  string url = 1;
+}
