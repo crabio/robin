@@ -27,6 +27,24 @@ App should be located near configuration file `config.yml`.
 
 Example file can be found in repo's `config.yml`.
 
+### Auth providers secrets
+
+All auth providers secrets are stored in the `secrets` folder.
+
+#### Google
+
+For creating OAuth2 secrets, follow steps:
+
+1. Go to [Google API console](https://console.cloud.google.com)
+2. Create project
+3. Add `OAuth 2.0 Client IDs` creadentials
+4. Add scopes for getting user profile info:
+    * `https://www.googleapis.com/auth/userinfo.email`
+	* `https://www.googleapis.com/auth/userinfo.profile`
+5. Add redirecting URL, which is link to your server API. (example: `http://localhost:9000`)
+
+Google OAuth2 secrets should be downloaded as JSON file from [Google API console](https://console.cloud.google.com/apis/).
+
 ## Lint
 
 For linting we are using [golangci-lint](https://github.com/golangci/golangci-lint)
