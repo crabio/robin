@@ -59,6 +59,14 @@ docker run --rm -v $(pwd):/app -w /app golangci/golangci-lint:v1.40-alpine golan
 
 Before pull request, please run `test.sh` script from the `scripts` folder for checking errors.
 
+### Code coverage
+
+After executing `test.sh` file `coverage.out` with code coverage statistic will be generated.
+For view this file in HTML format use:
+```sh
+go tool cover -html=coverage.out
+```
+
 ## Run
 
 For running use:
