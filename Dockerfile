@@ -16,7 +16,7 @@ COPY . .
 RUN go get -d -v
 
 # Build the binary.
-RUN go build -o /go/bin/main
+RUN CGO_ENABLED=0 go build -o /go/bin/main
 
 ############################
 # STEP 2 build a small image

@@ -15,6 +15,12 @@ services:
       - "1001:8080"
     volumes:
       - roach-db:/cockroach/cockroach-data
+      
+  robin:
+    image: robin
+    depends_on:
+      - nats
+      - roach-db
 
 volumes:
   roach-db:
