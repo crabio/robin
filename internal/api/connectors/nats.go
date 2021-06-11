@@ -13,20 +13,20 @@ import (
 
 // Connector for processing requests from NATS broker
 type NatsConnector struct {
-	NatsConnPtr *nats.Conn
-	SubPtr      *nats.Subscription
+	ConnPtr *nats.Conn
+	SubPtr  *nats.Subscription
 }
 
 // Create ant init instance of NATS connector
 func NatsInit(controllerData apiresources.ControllerData, config config.Config) (conn *NatsConnector, err error) {
 	// Connect to broker
-	conn.NatsConnPtr, err = nats.Connect(config.NATS.Hostname)
+	connPtr, err := nats.Connect(config.NATS.Hostname)
 	if err != nil {
 		return
 	}
 
 	// Subscribe on requests queue
-	conn.SubPtr, err = conn.NatsConnPtr.QueueSubscribe(
+	subPtr, err := connPtr.QueueSubscribe(
 		config.NATS.Request.Subject,
 		config.NATS.Request.Queue,
 		func(msg *nats.Msg) {
@@ -34,8 +34,13 @@ func NatsInit(controllerData apiresources.ControllerData, config config.Config) 
 		})
 	if err != nil {
 		// Close connection
-		conn.NatsConnPtr.Close()
+		connPtr.Close()
 		return
+	}
+
+	conn = &NatsConnector{
+		ConnPtr: connPtr,
+		SubPtr:  subPtr,
 	}
 
 	return
@@ -45,7 +50,7 @@ func (conn *NatsConnector) Close() (err error) {
 	// Close subscription
 	err = conn.SubPtr.Unsubscribe()
 	// Close connection
-	conn.NatsConnPtr.Close()
+	conn.ConnPtr.Close()
 
 	return
 }
