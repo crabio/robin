@@ -11,6 +11,7 @@ type Config struct {
 	Auth struct {
 		Google struct {
 			SecretFileName string `default:"secrets/google.json"`
+			RedirectURL    string `default:"http://localhost:9000/auth"`
 		}
 	}
 }

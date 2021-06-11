@@ -37,21 +37,20 @@ func New(config config.Config) (provider *Provider, err error) {
 	if err != nil {
 		return
 	}
-	conf, err := google.ConfigFromJSON(data)
+	oauthConf, err := google.ConfigFromJSON(data)
 	if err != nil {
 		return
 	}
 	// Add scopes for requesting data
-	conf.Scopes = []string{
+	oauthConf.Scopes = []string{
 		"https://www.googleapis.com/auth/userinfo.email",
 		"https://www.googleapis.com/auth/userinfo.profile",
 	}
-	// TODO Should be in config
-	conf.RedirectURL = "http://localhost:9000/auth"
+	oauthConf.RedirectURL = config.Auth.Google.RedirectURL
 
 	provider = &Provider{
-		oAuthConf: conf,
-		AuthURL:   conf.AuthCodeURL("state", authWithChooseAccount),
+		oAuthConf: oauthConf,
+		AuthURL:   oauthConf.AuthCodeURL("state", authWithChooseAccount),
 	}
 	return
 }
