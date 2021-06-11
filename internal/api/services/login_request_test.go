@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGoogleAuthRequest(t *testing.T) {
+func TestGoogleLoginRequest(t *testing.T) {
 	// Define Mock data
 	googleAuthProvider := authgoogle.Mock{}
 
@@ -21,20 +21,16 @@ func TestGoogleAuthRequest(t *testing.T) {
 	}
 
 	// Define input data
-	request := proto_resources.AuthRequest{
+	request := proto_resources.LoginRequest{
 		Provider: proto_resources.AuthProviderEnum_google,
-		AuthCode: "",
 	}
 
 	// Execute function
-	response, err := AuthRequest(controllerData, &request)
+	response, err := LoginRequest(controllerData, &request)
 
 	// Check result
 	assert.NoError(t, err)
-	assert.Equal(t, response, &proto_resources.AuthResponse{
-		FirstName: "Big",
-		LastName:  "Bo",
-		Email:     "bigbo@bigbo.com",
-		Locale:    "past",
+	assert.Equal(t, response, &proto_resources.LoginResponse{
+		Url: "test google auth URL",
 	})
 }
