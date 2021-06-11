@@ -1,10 +1,9 @@
 syntax = "proto3";
 
 package resources;
-option go_package = "/resources";
+option go_package = "/proto_resources";
 
 import "auth_provider.proto";
-import "error.proto";
 
 message AuthRequest {
   // External system for authentication
@@ -14,7 +13,9 @@ message AuthRequest {
 }
 
 message AuthResponse {
-  bool success = 1;
-  // Error message if auth was non success
-  Error error = 2;
+  // User profile
+  string FirstName = 1;
+  string LastName = 2;
+  string Email = 3;
+  string Locale = 4;
 }

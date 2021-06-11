@@ -2,34 +2,35 @@ package apiservices
 
 import (
 	// External
+	"fmt"
+
 	log "github.com/sirupsen/logrus"
 	// Internal
 	apiresources "github.com/iakrevetkho/robin/internal/api/resources"
-	resources "github.com/iakrevetkho/robin/internal/resources"
+	proto_resources "github.com/iakrevetkho/robin/internal/proto_resources"
 )
 
-func AuthRequest(controllerData apiresources.ControllerData, msg *resources.AuthRequest) (response *resources.AuthResponse, err error) {
+func AuthRequest(controllerData apiresources.ControllerData, msg *proto_resources.AuthRequest) (response *proto_resources.AuthResponse, err error) {
 	log.Debugf("Process auth request for provider '%s' with code '%s'", msg.GetProvider(), msg.GetAuthCode())
 
 	switch msg.Provider {
-	case resources.AuthProviderEnum_google:
-		err = controllerData.GoogleAuthProvider.ProcessAuthRedirect(msg.AuthCode)
+
+	case proto_resources.AuthProviderEnum_google:
+		userProfile, err := controllerData.GoogleAuthProvider.ProcessAuthRedirect(msg.AuthCode)
 
 		if err != nil {
-			response = &resources.AuthResponse{
-				Success: false,
-				Error: &resources.Error{
-					Reason: err.Error(),
-				},
-			}
+			return nil, err
 		} else {
-			response = &resources.AuthResponse{
-				Success: true,
+			response = &proto_resources.AuthResponse{
+				FirstName: userProfile.FirstName,
+				LastName:  userProfile.LastName,
+				Email:     userProfile.Email,
+				Locale:    userProfile.Locale,
 			}
+			return response, nil
 		}
-	default:
-		log.Errorf("Unknown auth provider for login request: '%s'", msg.Provider)
-	}
 
-	return
+	default:
+		return nil, fmt.Errorf("Unknown auth provider for login request: '%s'", msg.Provider)
+	}
 }

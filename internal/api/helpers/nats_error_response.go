@@ -10,24 +10,24 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	// Internal
-	resources "github.com/iakrevetkho/robin/internal/resources"
+	proto_resources "github.com/iakrevetkho/robin/internal/proto_resources"
 )
 
 // Method for sending error response onto message from NATS broker.
 // This method also logs error message bases on `format` and `..args`
-func NatsErrorResponse(msg *nats.Msg, requestUUID *resources.UUID, format string, args ...interface{}) error {
+func NatsErrorResponse(msg *nats.Msg, requestUUID *proto_resources.UUID, format string, args ...interface{}) error {
 	// Log error
 	err := fmt.Errorf(format, args...)
 	log.Error(err)
 
 	// Create message
-	response := resources.Msg{
+	response := proto_resources.Msg{
 		Uuid: requestUUID,
-		Ts: &resources.Timestamp{
+		Ts: &proto_resources.Timestamp{
 			Value: uint64(time.Now().Unix()),
 		},
-		Payload: &resources.Msg_Error{
-			Error: &resources.Error{
+		Payload: &proto_resources.Msg_Error{
+			Error: &proto_resources.Error{
 				Reason: err.Error(),
 			},
 		},

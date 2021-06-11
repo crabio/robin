@@ -4,6 +4,7 @@ import (
 	// External
 
 	"context"
+	"encoding/json"
 	"io/ioutil"
 
 	log "github.com/sirupsen/logrus"
@@ -51,7 +52,7 @@ func New(config config.Config) (provider *Provider, err error) {
 }
 
 // Method for processing redirect from auth provider after user is authenticated
-func (p *Provider) ProcessAuthRedirect(authCode string) (err error) {
+func (p *Provider) ProcessAuthRedirect(authCode string) (userProfile *UserProfile, err error) {
 	// Handle the exchange code to initiate a transport.
 	token, err := p.oAuthConf.Exchange(context.Background(), authCode)
 	if err != nil {
@@ -71,7 +72,15 @@ func (p *Provider) ProcessAuthRedirect(authCode string) (err error) {
 	if err != nil {
 		return
 	}
+	log.Debugf("Google auth response data: %s", string(bodyBytes))
 
-	log.Debugf("Google auth response data %+v", string(bodyBytes))
+	// Parse user profile data from response
+	userProfile = &UserProfile{}
+	err = json.Unmarshal(bodyBytes, &userProfile)
+	if err != nil {
+		return
+	}
+	log.Debugf("Google user profile: %+v", userProfile)
+
 	return
 }

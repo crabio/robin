@@ -11,7 +11,7 @@ import (
 
 	// Internal
 	"github.com/iakrevetkho/robin/internal/config"
-	resources "github.com/iakrevetkho/robin/internal/resources"
+	proto_resources "github.com/iakrevetkho/robin/internal/proto_resources"
 )
 
 func sendFailedRequest(config config.Config, nc *nats.Conn) error {
@@ -24,7 +24,7 @@ func sendFailedRequest(config config.Config, nc *nats.Conn) error {
 	}
 
 	// Parse response
-	response := resources.Msg{}
+	response := proto_resources.Msg{}
 	err = proto.Unmarshal(responseProto.Data, &response)
 	if err != nil {
 		return fmt.Errorf("Couldn't deserialize response. %v", err)

@@ -11,7 +11,7 @@ import (
 
 	// Internal
 	"github.com/iakrevetkho/robin/internal/config"
-	resources "github.com/iakrevetkho/robin/internal/resources"
+	proto_resources "github.com/iakrevetkho/robin/internal/proto_resources"
 	uuid "github.com/satori/go.uuid"
 	log "github.com/sirupsen/logrus"
 )
@@ -20,16 +20,16 @@ func LoginHandler(config config.Config, nc *nats.Conn, c *gin.Context) {
 	log.Info("Process login request")
 
 	// Create test message
-	msg := resources.Msg{
-		Uuid: &resources.UUID{
+	msg := proto_resources.Msg{
+		Uuid: &proto_resources.UUID{
 			Value: uuid.NewV4().Bytes(),
 		},
-		Ts: &resources.Timestamp{
+		Ts: &proto_resources.Timestamp{
 			Value: uint64(time.Now().Unix()),
 		},
-		Payload: &resources.Msg_LoginRequest{
-			LoginRequest: &resources.LoginRequest{
-				Provider: resources.AuthProviderEnum_google,
+		Payload: &proto_resources.Msg_LoginRequest{
+			LoginRequest: &proto_resources.LoginRequest{
+				Provider: proto_resources.AuthProviderEnum_google,
 			},
 		},
 	}
@@ -51,7 +51,7 @@ func LoginHandler(config config.Config, nc *nats.Conn, c *gin.Context) {
 	}
 
 	// Parse response
-	response := resources.Msg{}
+	response := proto_resources.Msg{}
 	err = proto.Unmarshal(responseProto.Data, &response)
 	if err != nil {
 		c.String(500, "Couldn't deserialize response. %v", err)
