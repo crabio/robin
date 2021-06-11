@@ -4,6 +4,7 @@ import (
 	// External
 	"fmt"
 
+	uuid "github.com/satori/go.uuid"
 	log "github.com/sirupsen/logrus"
 
 	// Internal
@@ -13,7 +14,11 @@ import (
 )
 
 func RouteMsg(controllerData apiresources.ControllerData, request *resources.Msg) (response *resources.Msg, err error) {
-	log.Debugf("Route message UUID:%s", request.Uuid.Value)
+	msgUUID, err := uuid.FromBytes(request.Uuid.Value)
+	if err != nil {
+		return
+	}
+	log.Debugf("Route message UUID: %v", msgUUID)
 
 	switch request.GetPayload().(type) {
 

@@ -9,7 +9,7 @@ import (
 )
 
 func LoginRequest(controllerData apiresources.ControllerData, msg *resources.LoginRequest) (response *resources.LoginResponse, err error) {
-	log.Debugf("Process login request: %+v", msg)
+	log.Debugf("Process login request for provider '%s'", msg.GetProvider())
 
 	switch msg.Provider {
 	case resources.AuthProviderEnum_google:
