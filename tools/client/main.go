@@ -2,12 +2,13 @@ package main
 
 import (
 	// External
-
+	"github.com/gin-gonic/gin"
 	"github.com/nats-io/nats.go"
 	log "github.com/sirupsen/logrus"
 
 	// Internal
 	"github.com/iakrevetkho/robin/internal/config"
+	"github.com/iakrevetkho/robin/internal/helpers"
 )
 
 func main() {
@@ -22,6 +23,17 @@ func main() {
 	nc, _ := nats.Connect(config.NATS.Hostname)
 	defer nc.Close()
 
-	sendSuccessRequest(config, nc)
+	r := gin.Default()
+	RegisterRoutes(config, nc, r)
+
+	go func() {
+		r.Run(":9000") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	}()
+
+	// Example of error response from `robin`
 	sendFailedRequest(config, nc)
+
+	// Wait any terminate signal
+	signal := helpers.WaitTermSignals()
+	log.Infof("Exit. Catched signal '%s'", signal.String())
 }

@@ -3,6 +3,7 @@ module github.com/iakrevetkho/robin
 go 1.13
 
 require (
+	github.com/gin-gonic/gin v1.7.2
 	github.com/golang/protobuf v1.5.2
 	github.com/golangci/golangci-lint v1.40.1 // indirect
 	github.com/jinzhu/configor v1.2.1

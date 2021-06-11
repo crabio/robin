@@ -40,6 +40,8 @@ func New(config config.Config) (provider *Provider, err error) {
 		"https://www.googleapis.com/auth/userinfo.profile",
 		"openid",
 	}
+	// TODO Should be in config
+	conf.RedirectURL = "http://localhost:9000/auth"
 
 	provider = &Provider{
 		oAuthConf: conf,

@@ -18,13 +18,13 @@ func AuthRequest(controllerData apiresources.ControllerData, msg *resources.Auth
 		if err != nil {
 			response = &resources.AuthResponse{
 				Success: false,
+				Error: &resources.Error{
+					Reason: err.Error(),
+				},
 			}
 		} else {
 			response = &resources.AuthResponse{
 				Success: true,
-				Error: &resources.Error{
-					Reason: err.Error(),
-				},
 			}
 		}
 	default:

@@ -2,20 +2,22 @@ package main
 
 import (
 	// External
+	"net/http"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/nats-io/nats.go"
-	uuid "github.com/satori/go.uuid"
-	log "github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
 
 	// Internal
 	"github.com/iakrevetkho/robin/internal/config"
 	resources "github.com/iakrevetkho/robin/internal/resources"
+	uuid "github.com/satori/go.uuid"
+	log "github.com/sirupsen/logrus"
 )
 
-func sendSuccessRequest(config config.Config, nc *nats.Conn) {
-	log.Info("Send success auth request")
+func LoginHandler(config config.Config, nc *nats.Conn, c *gin.Context) {
+	log.Info("Process login request")
 
 	// Create test message
 	msg := resources.Msg{
@@ -25,12 +27,11 @@ func sendSuccessRequest(config config.Config, nc *nats.Conn) {
 		Ts: &resources.Timestamp{
 			Value: uint64(time.Now().Unix()),
 		},
-		// Payload: &resources.Msg_AuthUserRequest{
-		// 	AuthUserRequest: &resources.AuthUserRequest{
-		// 		Username: "test",
-		// 		Password: "test",
-		// 	},
-		// },
+		Payload: &resources.Msg_LoginRequest{
+			LoginRequest: &resources.LoginRequest{
+				Provider: resources.AuthProviderEnum_google,
+			},
+		},
 	}
 
 	// Serialize message
@@ -52,5 +53,5 @@ func sendSuccessRequest(config config.Config, nc *nats.Conn) {
 		log.Fatalf("Couldn't deserialize response. %v", err)
 	}
 
-	log.Infof("Response: %+v", response.GetPayload())
+	c.Redirect(http.StatusTemporaryRedirect, response.GetLoginResponse().GetUrl())
 }
