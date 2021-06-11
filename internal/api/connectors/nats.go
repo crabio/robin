@@ -4,6 +4,7 @@ import (
 	// External
 
 	"github.com/nats-io/nats.go"
+	"github.com/prometheus/common/log"
 
 	// Internal
 	controllers "github.com/iakrevetkho/robin/internal/api/controllers"
@@ -30,7 +31,11 @@ func NatsInit(controllerData apiresources.ControllerData, config config.Config) 
 		config.NATS.Request.Subject,
 		config.NATS.Request.Queue,
 		func(msg *nats.Msg) {
-			controllers.NatsMessage(controllerData, msg)
+			err = controllers.NatsMessage(controllerData, msg)
+			if err != nil {
+				log.Error(err)
+				return
+			}
 		})
 	if err != nil {
 		// Close connection

@@ -4,7 +4,6 @@ import (
 	// External
 
 	"github.com/nats-io/nats.go"
-	log "github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
 
 	// Internal
@@ -15,37 +14,36 @@ import (
 )
 
 // Method for processing messages from NATS broker
-func NatsMessage(controllerData apiresources.ControllerData, msg *nats.Msg) {
+func NatsMessage(controllerData apiresources.ControllerData, msg *nats.Msg) (err error) {
 	// Check that msg is request
 	if msg.Reply == "" {
-		helpers.NatsErrorResponse(msg, &proto_resources.UUID{}, "Await request, but receive msg without reply: %+v", msg)
+		err = helpers.NatsErrorResponse(msg, &proto_resources.UUID{}, "Await request, but receive msg without reply: %+v", msg)
 		return
 	}
 
 	// Parse message protobuf
 	protoMsg := proto_resources.Msg{}
-	if err := proto.Unmarshal(msg.Data, &protoMsg); err != nil {
-		helpers.NatsErrorResponse(msg, &proto_resources.UUID{}, "Failed to parse proto msg '%s': %v", msg.Data, err)
+	if err = proto.Unmarshal(msg.Data, &protoMsg); err != nil {
+		err = helpers.NatsErrorResponse(msg, &proto_resources.UUID{}, "Failed to parse proto msg '%s': %v", msg.Data, err)
 		return
 	}
 
 	// Go to msg router
 	response, err := apirouters.RouteMsg(controllerData, &protoMsg)
 	if err != nil {
-		helpers.NatsErrorResponse(msg, &proto_resources.UUID{}, "Couldn't process msg '%+v': %v", protoMsg.GetPayload(), err)
+		err = helpers.NatsErrorResponse(msg, &proto_resources.UUID{}, "Couldn't process msg '%+v': %v", protoMsg.GetPayload(), err)
 		return
 	}
 
 	// Serialize response
 	responseProto, err := proto.Marshal(response)
 	if err != nil {
-		helpers.NatsErrorResponse(msg, &proto_resources.UUID{}, "Couldn't serialize proto response. %v", err)
+		err = helpers.NatsErrorResponse(msg, &proto_resources.UUID{}, "Couldn't serialize proto response. %v", err)
 		return
 	}
 
 	// Send response
 	err = msg.Respond(responseProto)
-	if err != nil {
-		log.Errorf("Couldn't send response. %v", err)
-	}
+
+	return
 }

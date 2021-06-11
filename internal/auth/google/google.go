@@ -22,8 +22,7 @@ const (
 
 // Semi-constants
 var (
-	authWithoutChooseAccount oauth2.AuthCodeOption = oauth2.SetAuthURLParam("prompt", "none")
-	authWithChooseAccount    oauth2.AuthCodeOption = oauth2.SetAuthURLParam("prompt", "select_account")
+	authWithChooseAccount oauth2.AuthCodeOption = oauth2.SetAuthURLParam("prompt", "select_account")
 )
 
 type Provider struct {
@@ -46,7 +45,6 @@ func New(config config.Config) (provider *Provider, err error) {
 	conf.Scopes = []string{
 		"https://www.googleapis.com/auth/userinfo.email",
 		"https://www.googleapis.com/auth/userinfo.profile",
-		"openid",
 	}
 	// TODO Should be in config
 	conf.RedirectURL = "http://localhost:9000/auth"

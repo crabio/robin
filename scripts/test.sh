@@ -7,7 +7,7 @@ cd $(dirname $0)
 cd ..
 
 # Test
-go test go test -v ./...
+go test -coverprofile=coverage.out
 
 # Lint
 docker run --rm -v $(pwd):/app -w /app golangci/golangci-lint:v1.40-alpine golangci-lint run

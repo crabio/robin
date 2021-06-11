@@ -31,11 +31,17 @@ func main() {
 	r.LoadHTMLFiles("auth.html")
 
 	go func() {
-		r.Run(":9000")
+		err = r.Run(":9000")
+		if err != nil {
+			log.Fatalf("Couldn't run web server. %v", err)
+		}
 	}()
 
 	// Example of error response from `robin`
-	sendFailedRequest(config, nc)
+	err = sendFailedRequest(config, nc)
+	if err != nil {
+		log.Fatalf("Couldn't send error auth request. %v", err)
+	}
 
 	// Wait any terminate signal
 	signal := helpers.WaitTermSignals()
