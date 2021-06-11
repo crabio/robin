@@ -73,5 +73,13 @@ func AuthHandler(config config.Config, nc *nats.Conn, c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, response.String())
+	// Get user profile from response
+	userProfile := response.GetAuthResponse()
+
+	c.HTML(http.StatusOK, "auth.html", map[string]interface{}{
+		"FirstName": userProfile.FirstName,
+		"LastName":  userProfile.LastName,
+		"Email":     userProfile.Email,
+		"Locale":    userProfile.Locale,
+	})
 }

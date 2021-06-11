@@ -23,8 +23,12 @@ func main() {
 	nc, _ := nats.Connect(config.NATS.Hostname)
 	defer nc.Close()
 
+	// Init gin router
 	r := gin.Default()
 	RegisterRoutes(config, nc, r)
+
+	// Load HTML templates
+	r.LoadHTMLFiles("auth.html")
 
 	go func() {
 		r.Run(":9000") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
