@@ -17,7 +17,7 @@ func LoginRequest(controllerData apiresources.ControllerData, msg *resources.Log
 			Url: controllerData.GoogleAuthProvider.AuthURL,
 		}
 	default:
-		log.Fatalf("Unknown auth provider for login request: '%s'", msg.Provider)
+		log.Errorf("Unknown auth provider for login request: '%s'", msg.Provider)
 	}
 
 	return

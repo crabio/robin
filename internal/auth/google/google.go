@@ -55,7 +55,7 @@ func (p *Provider) ProcessAuthRedirect(authCode string) (err error) {
 	// Handle the exchange code to initiate a transport.
 	token, err := p.oAuthConf.Exchange(context.Background(), authCode)
 	if err != nil {
-		log.Fatal(err)
+		log.Error(err)
 	}
 
 	client := p.oAuthConf.Client(context.Background(), token)

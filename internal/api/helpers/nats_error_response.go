@@ -15,7 +15,7 @@ import (
 
 // Method for sending error response onto message from NATS broker.
 // This method also logs error message bases on `format` and `..args`
-func NatsErrorResponse(msg *nats.Msg, requestUUID *resources.UUID, format string, args ...interface{}) {
+func NatsErrorResponse(msg *nats.Msg, requestUUID *resources.UUID, format string, args ...interface{}) error {
 	// Log error
 	err := fmt.Errorf(format, args...)
 	log.Error(err)
@@ -36,12 +36,12 @@ func NatsErrorResponse(msg *nats.Msg, requestUUID *resources.UUID, format string
 	// Serialize response
 	responseProto, err := proto.Marshal(&response)
 	if err != nil {
-		log.Fatalf("Couldn't serialize proto response: %v", err)
+		return fmt.Errorf("Couldn't serialize proto response: %v", err)
 	}
 
 	// Send response
 	err = msg.Respond(responseProto)
 	if err != nil {
-		log.Errorf("Couldn't send response. %v", err)
+		return fmt.Errorf("Couldn't send response. %v", err)
 	}
 }

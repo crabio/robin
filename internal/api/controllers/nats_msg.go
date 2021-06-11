@@ -39,7 +39,8 @@ func NatsMessage(controllerData apiresources.ControllerData, msg *nats.Msg) {
 	// Serialize response
 	responseProto, err := proto.Marshal(response)
 	if err != nil {
-		log.Fatalf("Couldn't serialize proto response: %v", err)
+		helpers.NatsErrorResponse(msg, &resources.UUID{}, "Couldn't serialize proto response. %v", err)
+		return
 	}
 
 	// Send response

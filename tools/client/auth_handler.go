@@ -51,20 +51,26 @@ func AuthHandler(config config.Config, nc *nats.Conn, c *gin.Context) {
 	// Serialize message
 	msgBytes, err := proto.Marshal(&msg)
 	if err != nil {
-		log.Fatalf("Couldn't serialize msg. %v", err)
+		c.String(500, "Couldn't serialize msg. %v", err)
+		c.Abort()
+		return
 	}
 
 	// Send request
 	responseProto, err := nc.Request(config.NATS.Request.Subject, msgBytes, 1*time.Second)
 	if err != nil {
-		log.Fatalf("Couldn't send request. %v", err)
+		c.String(500, "Couldn't send request. %v", err)
+		c.Abort()
+		return
 	}
 
 	// Parse response
 	response := resources.Msg{}
 	err = proto.Unmarshal(responseProto.Data, &response)
 	if err != nil {
-		log.Fatalf("Couldn't deserialize response. %v", err)
+		c.String(500, "Couldn't deserialize response. %v", err)
+		c.Abort()
+		return
 	}
 
 	c.JSON(http.StatusOK, response.String())
