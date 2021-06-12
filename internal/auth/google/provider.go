@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"io/ioutil"
+	"path/filepath"
 
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/oauth2"
@@ -23,11 +24,13 @@ type Provider struct {
 }
 
 func New(config config.Config) (provider *Provider, err error) {
+	secretsFilePath := filepath.Join(config.SecretsFolderPath, config.Auth.Google.SecretFileName)
 	// Read JSON file with Google API secrets for your service
-	data, err := ioutil.ReadFile(config.Auth.Google.SecretFileName)
+	data, err := ioutil.ReadFile(secretsFilePath)
 	if err != nil {
 		return
 	}
+	log.Debugf("Google secrets have been read from '%s'", secretsFilePath)
 	oauthConf, err := google.ConfigFromJSON(data)
 	if err != nil {
 		return
@@ -53,6 +56,7 @@ func (p *Provider) GetAuthURL() string {
 
 // Method for processing redirect from auth provider after user is authenticated
 func (p *Provider) ProcessAuthRedirect(authCode string) (userProfile *resources.UserProfile, err error) {
+	log.Debugf("Process Google auth redirect with code '%s'", authCode)
 	// Handle the exchange code to initiate a transport.
 	token, err := p.oAuthConf.Exchange(context.Background(), authCode)
 	if err != nil {

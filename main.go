@@ -2,7 +2,6 @@ package main
 
 import (
 	// External
-
 	log "github.com/sirupsen/logrus"
 
 	// Internal
