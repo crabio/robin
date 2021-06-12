@@ -79,6 +79,12 @@ go run .
 
 ### Docker
 
+For building docker container use:
+
+```sh
+sh scripts/build_docker.sh
+```
+
 For deploy app with docker run script in `docker` folder:
 ```sh
 docker-compose up -d
