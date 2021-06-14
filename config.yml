@@ -1,9 +1,11 @@
+loglevel: "debug"
 nats:
   hostname: "localhost"
   request:
     subject: "auth-request"
     queue: "robin"
+secretsfolderpath: "secrets" 
 auth:
   google:
-    secretfilename: "secrets/google.json"
+    secretfilename: "google.json"
     redirecturl: "http://localhost:9000/auth"

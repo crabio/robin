@@ -2,9 +2,10 @@ package apiconnectors
 
 import (
 	// External
+	"fmt"
 
 	"github.com/nats-io/nats.go"
-	"github.com/prometheus/common/log"
+	log "github.com/sirupsen/logrus"
 
 	// Internal
 	controllers "github.com/iakrevetkho/robin/internal/api/controllers"
@@ -20,8 +21,11 @@ type NatsConnector struct {
 
 // Create ant init instance of NATS connector
 func NatsInit(controllerData apiresources.ControllerData, config config.Config) (conn *NatsConnector, err error) {
+	connectionURL := fmt.Sprintf("%s:%d", config.NATS.Hostname, config.NATS.Port)
+	log.Debugf("Try to connect to NATS by '%s'", connectionURL)
+
 	// Connect to broker
-	connPtr, err := nats.Connect(config.NATS.Hostname)
+	connPtr, err := nats.Connect(connectionURL)
 	if err != nil {
 		return
 	}

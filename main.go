@@ -14,14 +14,15 @@ import (
 )
 
 func main() {
-	log.SetLevel(log.DebugLevel)
+	helpers.InitLog()
 
 	// Load app configuration
 	config, err := config.LoadConfig("config.yml")
 	if err != nil {
 		log.Fatalf("Couldn't load app config. %v", err)
 	}
-	log.Infof("Loaded config: %+v", config)
+	log.SetLevel(config.LogLevel)
+	log.WithField("config", config).Infof("Loaded config")
 
 	// Init auth providers
 	googleAuthProvider, err := auth_google.New(config)

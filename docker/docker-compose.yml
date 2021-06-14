@@ -7,14 +7,29 @@ services:
       - "6222:6222"
       - "1000:8222"
   
-  roach-db:
-    image: cockroachdb/cockroach:v21.1.2
-    command: start-single-node --insecure
-    ports:
-      - "26257:26257"
-      - "1001:8080"
-    volumes:
-      - roach-db:/cockroach/cockroach-data
+  # roach-db:
+  #   image: cockroachdb/cockroach:v21.1.2
+  #   command: start-single-node --insecure
+  #   ports:
+  #     - "26257:26257"
+  #     - "1001:8080"
+  #   volumes:
+  #     - roach-db:/cockroach/cockroach-data
+      
+  robin:
+    image: robin
+    restart: unless-stopped
+    environment: 
+      - LOG_LEVEL=info
+      - NATS_HOSTNAME=nats
+      - NATS_PORT=4222
+      - SECRETS_FOLDER_PATH=/usr/local/share/robin/secrets/
+      - GOOGLE_REDIRECT_URL=http://localhost:9000/auth
+    volumes: 
+      - $HOME/Documents/github/robin/secrets:/usr/local/share/robin/secrets/
+    depends_on:
+      - nats
+      # - roach-db
 
 volumes:
   roach-db:
