@@ -8,7 +8,7 @@ cd ..
 
 # Test
 echo "Run unit tests"
-go test -coverprofile=coverage.out -v ./...
+go test -coverprofile=coverage.out -v ./... | exit 1
 
 echo "Code coverage"
 go tool cover -func coverage.out
