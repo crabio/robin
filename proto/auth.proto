@@ -8,8 +8,9 @@ import "auth_provider.proto";
 message AuthRequest {
   // External system for authentication
   AuthProviderEnum provider = 1;
-  // Authentication code from redirect URL
-  string auth_code = 2;
+  // Authentication response URL from the auth provider
+  // Example: /auth?state=state&code=4%2F&scope=email+profile&authuser=0&prompt=consent
+  string auth_provider_url_response = 2;
 }
 
 message AuthResponse {
