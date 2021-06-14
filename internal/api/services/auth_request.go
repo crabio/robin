@@ -2,6 +2,7 @@ package apiservices
 
 import (
 	// External
+	"fmt"
 	"net/url"
 
 	log "github.com/sirupsen/logrus"
@@ -30,25 +31,24 @@ func AuthRequest(controllerData apiresources.ControllerData, msg *proto_resource
 	}
 	log.WithField("authProviderResponse", authProviderResponse).Debug("Parsed auth provider response params")
 
-	// switch msg.Provider {
+	switch msg.Provider {
 
-	// case proto_resources.AuthProviderEnum_google:
-	// 	userProfile, err := controllerData.GoogleAuthProvider.ProcessAuthRedirect(msg.AuthCode)
+	case proto_resources.AuthProviderEnum_google:
+		userProfile, err := controllerData.GoogleAuthProvider.ProcessAuthRedirect(authProviderResponse.AuthCode)
 
-	// 	if err != nil {
-	// 		return nil, err
-	// 	} else {
-	// 		response = &proto_resources.AuthResponse{
-	// 			FirstName: userProfile.FirstName,
-	// 			LastName:  userProfile.LastName,
-	// 			Email:     userProfile.Email,
-	// 			Locale:    userProfile.Locale,
-	// 		}
-	// 		return response, nil
-	// 	}
+		if err != nil {
+			return nil, err
+		} else {
+			response = &proto_resources.AuthResponse{
+				FirstName: userProfile.FirstName,
+				LastName:  userProfile.LastName,
+				Email:     userProfile.Email,
+				Locale:    userProfile.Locale,
+			}
+			return response, nil
+		}
 
-	// default:
-	// 	return nil, fmt.Errorf("Unknown auth provider for login request: '%s'", msg.Provider)
-	// }
-	return
+	default:
+		return nil, fmt.Errorf("Unknown auth provider for login request: '%s'", msg.Provider)
+	}
 }
