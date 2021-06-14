@@ -47,6 +47,7 @@ COPY --from=builder /etc/group /etc/group
 COPY --from=builder /go/bin/main /go/bin/main
 
 # Add ENV params
+ENV LOG_LEVEL=info
 ENV NATS_HOSTNAME=localhost
 ENV NATS_PORT=4222
 

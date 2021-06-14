@@ -20,6 +20,7 @@ services:
     image: robin
     restart: unless-stopped
     environment: 
+      - LOG_LEVEL=info
       - NATS_HOSTNAME=nats
       - NATS_PORT=4222
       - SECRETS_FOLDER_PATH=/usr/local/share/robin/secrets/
