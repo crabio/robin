@@ -1,8 +1,15 @@
 package config
 
+import (
+	// External
+	log "github.com/sirupsen/logrus"
+	// Internal
+)
+
 // TODO Add logging level
 type Config struct {
-	NATS struct {
+	LogLevel log.Level `default:"info" env:"LOG_LEVEL"`
+	NATS     struct {
 		Hostname string `default:"localhost" env:"NATS_HOSTNAME"`
 		Port     uint64 `default:"4222" env:"NATS_PORT"`
 		Request  struct {

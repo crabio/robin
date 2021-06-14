@@ -7,14 +7,14 @@ services:
       - "6222:6222"
       - "1000:8222"
   
-  roach-db:
-    image: cockroachdb/cockroach:v21.1.2
-    command: start-single-node --insecure
-    ports:
-      - "26257:26257"
-      - "1001:8080"
-    volumes:
-      - roach-db:/cockroach/cockroach-data
+  # roach-db:
+  #   image: cockroachdb/cockroach:v21.1.2
+  #   command: start-single-node --insecure
+  #   ports:
+  #     - "26257:26257"
+  #     - "1001:8080"
+  #   volumes:
+  #     - roach-db:/cockroach/cockroach-data
       
   robin:
     image: robin
@@ -28,7 +28,7 @@ services:
       - $HOME/Documents/github/robin/secrets:/usr/local/share/robin/secrets/
     depends_on:
       - nats
-      - roach-db
+      # - roach-db
 
 volumes:
   roach-db:

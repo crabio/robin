@@ -28,7 +28,7 @@ WORKDIR $GOPATH/src/mypackage/myapp/
 COPY . .
 
 # Fetch dependencies.
-RUN go get -d -v
+RUN go get -v
 
 # Build the binary.
 RUN CGO_ENABLED=0 go build -o /go/bin/main

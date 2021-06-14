@@ -1,3 +1,4 @@
+loglevel: "debug"
 nats:
   hostname: "localhost"
   request:
