@@ -56,7 +56,7 @@ func (p *Provider) GetAuthURL() string {
 
 // Method for processing redirect from auth provider after user is authenticated
 func (p *Provider) ProcessAuthRedirect(authCode string) (userProfile *resources.UserProfile, err error) {
-	log.Debugf("Process Google auth redirect with code '%s'", authCode)
+	log.WithField("authCode", authCode).Debug("Process Google auth redirect")
 	// Handle the exchange code to initiate a transport.
 	token, err := p.oAuthConf.Exchange(context.Background(), authCode)
 	if err != nil {
@@ -76,7 +76,7 @@ func (p *Provider) ProcessAuthRedirect(authCode string) (userProfile *resources.
 	if err != nil {
 		return
 	}
-	log.Debugf("Google auth response data: %s", string(bodyBytes))
+	log.Debug("Google auth response: %s", string(bodyBytes))
 
 	// Parse user profile data from response
 	googleUserProfile := &UserProfile{}
@@ -84,7 +84,7 @@ func (p *Provider) ProcessAuthRedirect(authCode string) (userProfile *resources.
 	if err != nil {
 		return
 	}
-	log.Debugf("Google user profile: %+v", googleUserProfile)
+	log.WithField("profile", googleUserProfile).Debug("Google user profile")
 
 	// Convert Google user profile to overall user profile
 	userProfile = &resources.UserProfile{
