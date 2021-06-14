@@ -15,3 +15,5 @@ go tool cover -func coverage.out || exit 1
 
 # Lint
 docker run --rm -v $(pwd):/app -w /app golangci/golangci-lint:v1.40-alpine golangci-lint run || exit 1
+
+echo "TESTS DONE"

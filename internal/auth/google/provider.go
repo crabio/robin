@@ -76,7 +76,7 @@ func (p *Provider) ProcessAuthRedirect(authCode string) (userProfile *resources.
 	if err != nil {
 		return
 	}
-	log.Debug("Google auth response: %s", string(bodyBytes))
+	log.Debugf("Google auth response: %s", string(bodyBytes))
 
 	// Parse user profile data from response
 	googleUserProfile := &UserProfile{}
