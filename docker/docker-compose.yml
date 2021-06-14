@@ -16,19 +16,19 @@ services:
   #   volumes:
   #     - roach-db:/cockroach/cockroach-data
       
-  robin:
-    image: robin
-    restart: unless-stopped
-    environment: 
-      - LOG_LEVEL=info
-      - NATS_HOSTNAME=nats
-      - NATS_PORT=4222
-      - SECRETS_FOLDER_PATH=/usr/local/share/robin/secrets/
-      - GOOGLE_REDIRECT_URL=http://localhost:9000/auth
-    volumes: 
-      - $HOME/Documents/github/robin/secrets:/usr/local/share/robin/secrets/
-    depends_on:
-      - nats
+  # robin:
+  #   image: robin
+  #   restart: unless-stopped
+  #   environment: 
+  #     - LOG_LEVEL=info
+  #     - NATS_HOSTNAME=nats
+  #     - NATS_PORT=4222
+  #     - SECRETS_FOLDER_PATH=/usr/local/share/robin/secrets/
+  #     - GOOGLE_REDIRECT_URL=http://localhost:9000/auth
+  #   volumes: 
+  #     - $HOME/Documents/github/robin/secrets:/usr/local/share/robin/secrets/
+  #   depends_on:
+  #     - nats
       # - roach-db
 
 volumes:

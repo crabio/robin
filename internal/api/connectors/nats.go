@@ -22,7 +22,7 @@ type NatsConnector struct {
 // Create ant init instance of NATS connector
 func NatsInit(controllerData apiresources.ControllerData, config config.Config) (conn *NatsConnector, err error) {
 	connectionURL := fmt.Sprintf("%s:%d", config.NATS.Hostname, config.NATS.Port)
-	log.Debugf("Try to connect to NATS by '%s'", connectionURL)
+	log.WithField("url", connectionURL).Debug("Try to connect to NATS")
 
 	// Connect to broker
 	connPtr, err := nats.Connect(connectionURL)
@@ -51,6 +51,7 @@ func NatsInit(controllerData apiresources.ControllerData, config config.Config) 
 		ConnPtr: connPtr,
 		SubPtr:  subPtr,
 	}
+	log.WithField("url", connectionURL).Debug("Connected to NATS")
 
 	return
 }

@@ -16,21 +16,8 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-type AuthRequest struct {
-	AuthCode string `form:"code" binding:"required"`
-}
-
 func AuthHandler(config config.Config, nc *nats.Conn, c *gin.Context) {
 	log.Info("Process auth request")
-
-	// Parse request body
-	requestBody := AuthRequest{}
-	err := c.BindQuery(&requestBody)
-	if err != nil {
-		c.String(400, "Couldn't parse auth request args. %v", err)
-		c.Abort()
-		return
-	}
 
 	// Create test message
 	msg := proto_resources.Msg{
@@ -42,8 +29,8 @@ func AuthHandler(config config.Config, nc *nats.Conn, c *gin.Context) {
 		},
 		Payload: &proto_resources.Msg_AuthRequest{
 			AuthRequest: &proto_resources.AuthRequest{
-				Provider: proto_resources.AuthProviderEnum_google,
-				AuthCode: requestBody.AuthCode,
+				Provider:                proto_resources.AuthProviderEnum_google,
+				AuthProviderUrlResponse: c.Request.URL.String(),
 			},
 		},
 	}

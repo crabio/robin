@@ -22,8 +22,8 @@ func TestGoogleAuthRequest(t *testing.T) {
 
 	// Define input data
 	request := proto_resources.AuthRequest{
-		Provider: proto_resources.AuthProviderEnum_google,
-		AuthCode: "",
+		Provider:                proto_resources.AuthProviderEnum_google,
+		AuthProviderUrlResponse: "",
 	}
 
 	// Execute function
