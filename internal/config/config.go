@@ -6,7 +6,6 @@ import (
 	// Internal
 )
 
-// TODO Add logging level
 type Config struct {
 	LogLevel log.Level `default:"info" env:"LOG_LEVEL"`
 	NATS     struct {
